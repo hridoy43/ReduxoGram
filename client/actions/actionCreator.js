@@ -22,6 +22,6 @@ export function removeComment(postId, comment_index) {
     return {
         type: 'REMOVE_COMMENT',
         postId,
-        comment_indexexport
+        comment_index
     }
 }
