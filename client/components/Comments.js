@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 
 class Comments extends Component {
-
+    constructor(props) {
+        super(props)
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
 
     renderComment(comment, i) {
         return (
@@ -9,18 +12,33 @@ class Comments extends Component {
                 <p>
                     <strong>{comment.user}</strong>
                     {comment.text}
-                    <button className="remove-comment">&times;</button>
+                    <button className="remove-comment" onClick={this.props.removeComment.bind(null, this.props.params.postId, i)}>&times;</button>
                 </p>
             </div>
         )
+    }
+
+
+
+    handleSubmit(e) {
+
+        e.preventDefault();
+        console.log('props', this.props)
+        const { postId } = this.props.params;
+        const author = this.refs.author.value;
+        const comment = this.refs.comment.value;
+
+        this.props.addComment(postId, author, comment);
+        this.refs.commentForm.reset();
+
     }
 
     render() {
 
         return (
             <div>
-                {this.props.postComments.map(this.renderComment)}
-                <form ref="commentForm" className="comment-form">
+                {this.props.postComments.map(this.renderComment.bind(this))}
+                <form ref="commentForm" className="comment-form" onSubmit={this.handleSubmit}>
                     <input type="text" ref="author" placeholder="Author" />
                     <input type="text" ref="comment" placeholder="Comment" />
                     <input type="submit" hidden />
